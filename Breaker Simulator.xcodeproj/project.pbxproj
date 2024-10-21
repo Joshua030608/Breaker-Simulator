@@ -257,6 +257,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = KTP2C8ZWM3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Breaker-Simulator-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Breaker Simulator";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports-games";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -292,6 +293,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = KTP2C8ZWM3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Breaker-Simulator-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Breaker Simulator";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports-games";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
