@@ -12,6 +12,7 @@ struct SaveView: View {
     let goldColor: Color = Color(CGColor(red: 239/255, green: 191/255, blue: 4/255, alpha: 1))
     let wasPlayed = Int.random(in: 0...1) == 0 ? true : false
     let lastPlayedText: String
+    @State var saveButtonPressed = false
     
     init(_ index: Int) {
         self.index = index
@@ -21,6 +22,7 @@ struct SaveView: View {
     var body: some View {
         Button {
             print("pressed save button #\(index)")
+            saveButtonPressed = true
         } label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 50)
@@ -34,13 +36,15 @@ struct SaveView: View {
                         Text("Save #\(index)")
                             .foregroundStyle(Color.black)
                             .font(Font.custom("Lilita One", size: 30))
-                        Button {
-                            print("Cleared save #\(index)")
-                        } label: {
-                            Image(systemName: "x.circle.fill")
-                                .resizable()
-                                .foregroundStyle(.white)
-                                .frame(width: 20, height: 20)
+                        if wasPlayed {
+                            Button {
+                                print("Cleared save #\(index)")
+                            } label: {
+                                Image(systemName: "x.circle.fill")
+                                    .resizable()
+                                    .foregroundStyle(.red)
+                                    .frame(width: 25, height: 25)
+                            }
                         }
 
                     }
@@ -49,6 +53,9 @@ struct SaveView: View {
                         .font(Font.custom("Lilita One", size: 20))
                 }
             }
+        }.navigationDestination(isPresented: $saveButtonPressed) {
+            HubView(hasPlayedBefore: wasPlayed)
+                .navigationBarBackButtonHidden()
         }
     }
 }
