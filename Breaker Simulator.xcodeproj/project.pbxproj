@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		02883DB12CC7028900AD11AC /* NavigationTransitions in Frameworks */ = {isa = PBXBuildFile; productRef = 02883DB02CC7028900AD11AC /* NavigationTransitions */; };
-		02883DB42CC7291C00AD11AC /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 02883DB32CC7291C00AD11AC /* SDWebImageSwiftUI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,7 +27,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				02883DB42CC7291C00AD11AC /* SDWebImageSwiftUI in Frameworks */,
 				02883DB12CC7028900AD11AC /* NavigationTransitions in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -73,7 +71,6 @@
 			name = "Breaker Simulator";
 			packageProductDependencies = (
 				02883DB02CC7028900AD11AC /* NavigationTransitions */,
-				02883DB32CC7291C00AD11AC /* SDWebImageSwiftUI */,
 			);
 			productName = "Breaker Simulator";
 			productReference = 022308372CC5EB8000BE2A64 /* Breaker Simulator.app */;
@@ -105,7 +102,6 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				02883DAF2CC7028900AD11AC /* XCRemoteSwiftPackageReference "swiftui-navigation-transitions" */,
-				02883DB22CC7291C00AD11AC /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 022308382CC5EB8000BE2A64 /* Products */;
@@ -361,14 +357,6 @@
 				minimumVersion = 0.13.4;
 			};
 		};
-		02883DB22CC7291C00AD11AC /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.1.2;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -376,11 +364,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 02883DAF2CC7028900AD11AC /* XCRemoteSwiftPackageReference "swiftui-navigation-transitions" */;
 			productName = NavigationTransitions;
-		};
-		02883DB32CC7291C00AD11AC /* SDWebImageSwiftUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 02883DB22CC7291C00AD11AC /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
-			productName = SDWebImageSwiftUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
