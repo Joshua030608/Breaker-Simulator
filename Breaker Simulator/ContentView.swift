@@ -9,8 +9,9 @@ import SwiftUI
 import NavigationTransitions
 
 struct ContentView: View {
+    @EnvironmentObject var viewModel: SaveViewModel
     
-    let goldColor: Color = Color(CGColor(red: 239/255, green: 191/255, blue: 4/255, alpha: 1))
+    private let goldColor: Color = Color(CGColor(red: 239/255, green: 191/255, blue: 4/255, alpha: 1))
     
     var body: some View {
         NavigationStack {
@@ -22,8 +23,8 @@ struct ContentView: View {
                         .font(Font.custom("Lilita One", size: 50))
                         .foregroundStyle(Color.black)
                         .padding(.bottom, 50)
-                    ForEach(1..<5) { index in
-                        SaveView(index).padding(.bottom, 25)
+                    ForEach(viewModel.saveSlots) { save in
+                        SaveView(save: save).padding(.bottom, 25)
                     }
                 }
             }

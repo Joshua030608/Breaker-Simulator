@@ -7,21 +7,33 @@
 import SwiftUI
 
 struct SaveView: View {
+    @EnvironmentObject var viewModel: SaveViewModel
     
-    let index: Int
-    let goldColor: Color = Color(CGColor(red: 239/255, green: 191/255, blue: 4/255, alpha: 1))
-    let wasPlayed = Int.random(in: 0...1) == 0 ? true : false
-    let lastPlayedText: String
-    @State var saveButtonPressed = false
+    private let save: SaveSlot
+    private let goldColor: Color = Color(CGColor(red: 239/255, green: 191/255, blue: 4/255, alpha: 1))
+    private let lastPlayedText: String
+    @State private var saveButtonPressed = false
     
-    init(_ index: Int) {
-        self.index = index
-        lastPlayedText = wasPlayed ? "Last Played on 10/\(Int.random(in: 1...20))/24" : "Never Played"
+    static private func formatLastPlayedText(save: SaveSlot) -> String {
+        if save.lastPlayed != nil {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MM/dd/yy"
+            return "Last Played on \(formatter.string(from: save.lastPlayed!))"
+        } else {
+            return "Never Played"
+        }
+    }
+    
+    init(save: SaveSlot) {
+        self.save = save
+        self.lastPlayedText = SaveView.formatLastPlayedText(save: self.save)
     }
     
     var body: some View {
         Button {
-            print("pressed save button #\(index)")
+            print("pressed save button #\(save.id)")
+            let newSave = SaveSlot(id: save.id, wasPlayed: true, lastPlayed: Date(), money: save.money, followers: save.followers, currentPackTier: save.currentPackTier)
+            viewModel.updateSaveSlots(id: save.id, newSave: newSave)
             saveButtonPressed = true
         } label: {
             ZStack {
@@ -33,12 +45,13 @@ struct SaveView: View {
                         Image("save_icon")
                             .resizable()
                             .frame(width: 50, height: 50)
-                        Text("Save #\(index)")
+                        Text("Save #\(save.id)")
                             .foregroundStyle(Color.black)
                             .font(Font.custom("Lilita One", size: 30))
-                        if wasPlayed {
+                        if save.wasPlayed {
                             Button {
-                                print("Cleared save #\(index)")
+                                print("Cleared save #\(save.id)")
+                                viewModel.clearSaveSlots(id: save.id)
                             } label: {
                                 Image(systemName: "x.circle.fill")
                                     .resizable()
@@ -46,7 +59,6 @@ struct SaveView: View {
                                     .frame(width: 25, height: 25)
                             }
                         }
-
                     }
                     Text(lastPlayedText)
                         .foregroundStyle(Color.black)
@@ -54,7 +66,7 @@ struct SaveView: View {
                 }
             }
         }.navigationDestination(isPresented: $saveButtonPressed) {
-            HubView(hasPlayedBefore: wasPlayed)
+            HubView(saveSlot: save.id)
                 .navigationBarBackButtonHidden()
         }
     }

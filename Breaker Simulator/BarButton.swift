@@ -18,7 +18,8 @@ enum BarButtonType: CaseIterable {
 struct BarButton: View {
     @Environment(\.dismiss) private var dismiss
     
-    let type: BarButtonType
+    private let type: BarButtonType
+    @State private var settingsButtonPressed = false
     
     init (type: BarButtonType) {
         self.type = type
@@ -29,6 +30,7 @@ struct BarButton: View {
             case .settings:
             Button {
                 print("Settings Pressed")
+                settingsButtonPressed.toggle()
             } label: {
                 Image(systemName: "gear.circle.fill")
                     .resizable()
@@ -37,6 +39,10 @@ struct BarButton: View {
                 .padding(.trailing, 20)
                 .padding(.top, 50)
                 .offset(x: 165, y: -35)
+                .navigationDestination(isPresented: $settingsButtonPressed) {
+                    SettingsView()
+                        .navigationBarBackButtonHidden()
+                }
             case .back:
             Button {
                 dismiss()
