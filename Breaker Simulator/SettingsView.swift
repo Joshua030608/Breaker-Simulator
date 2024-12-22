@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @EnvironmentObject private var viewModel: SaveViewModel
     var body: some View {
         ZStack {
             Color.gray

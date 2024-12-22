@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct SaveView: View {
-    @EnvironmentObject var viewModel: SaveViewModel
+    @EnvironmentObject private var viewModel: SaveViewModel
     
     private let save: SaveSlot
     private let goldColor: Color = Color(CGColor(red: 239/255, green: 191/255, blue: 4/255, alpha: 1))
@@ -31,7 +31,6 @@ struct SaveView: View {
     
     var body: some View {
         Button {
-            print("pressed save button #\(save.id)")
             let newSave = SaveSlot(id: save.id, wasPlayed: true, lastPlayed: Date(), money: save.money, followers: save.followers, currentPackTier: save.currentPackTier)
             viewModel.updateSaveSlots(id: save.id, newSave: newSave)
             saveButtonPressed = true
@@ -45,12 +44,11 @@ struct SaveView: View {
                         Image("save_icon")
                             .resizable()
                             .frame(width: 50, height: 50)
-                        Text("Save #\(save.id)")
+                        Text("Save #\(save.id + 1)")
                             .foregroundStyle(Color.black)
                             .font(Font.custom("Lilita One", size: 30))
                         if save.wasPlayed {
                             Button {
-                                print("Cleared save #\(save.id)")
                                 viewModel.clearSaveSlots(id: save.id)
                             } label: {
                                 Image(systemName: "x.circle.fill")

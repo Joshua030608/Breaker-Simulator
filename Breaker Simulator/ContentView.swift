@@ -9,7 +9,7 @@ import SwiftUI
 import NavigationTransitions
 
 struct ContentView: View {
-    @EnvironmentObject var viewModel: SaveViewModel
+    @EnvironmentObject private var viewModel: SaveViewModel
     
     private let goldColor: Color = Color(CGColor(red: 239/255, green: 191/255, blue: 4/255, alpha: 1))
     

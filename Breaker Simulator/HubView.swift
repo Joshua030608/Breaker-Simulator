@@ -7,7 +7,7 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
-fileprivate enum HubViewType {
+private enum HubViewType {
     case live
     case inventory
     case shipping
@@ -15,7 +15,7 @@ fileprivate enum HubViewType {
 
 struct HubView: View {
     
-    @EnvironmentObject var viewModel: SaveViewModel
+    @EnvironmentObject private var viewModel: SaveViewModel
     
     @State private var saveSlot: Int
     @State private var currentView: HubViewType = .live

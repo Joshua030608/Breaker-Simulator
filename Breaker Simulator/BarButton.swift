@@ -29,7 +29,6 @@ struct BarButton: View {
         switch type {
             case .settings:
             Button {
-                print("Settings Pressed")
                 settingsButtonPressed.toggle()
             } label: {
                 Image(systemName: "gear.circle.fill")

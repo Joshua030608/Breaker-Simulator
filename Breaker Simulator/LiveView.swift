@@ -15,46 +15,28 @@ fileprivate enum Gif: String {
     case badCard = "badCard.gif"
 }
 
-enum PackAlpha: Double, Codable {
-    case bronze = 2.5
-    case silver = 2.0
-    case gold = 1.5
-    case hobby = 1.01
-}
-
 struct LiveView: View {
     
-    @EnvironmentObject var viewModel: SaveViewModel
+    @EnvironmentObject private var viewModel: SaveViewModel
     @State private var save: SaveSlot
     
-    //@State private var followers = 0
     @State private var followersToGain = 0
     @State private var followerString = ""
     
-    //@State private var currentPackTier: PackAlpha = .bronze
     @State private var packString: AttributedString
     
     @State private var currentGif: Gif = Gif.bear
     @State private var isProcessing = false
     
-    static private let packColors: [String: Color] = [
-        "BRONZE": Color(CGColor(red: 205/255, green: 127/255, blue: 50/255, alpha: 1)),
-        "SILVER": Color(CGColor(red: 192/255, green: 192/255, blue: 192/255, alpha: 1)),
-        "GOLD": Color(CGColor(red: 239/255, green: 191/255, blue: 4/255, alpha: 1)),
-        "HOBBY": Color(CGColor(red: 185/255, green: 242/255, blue: 255/255, alpha: 1))
-    ]
-    
-    static func createAttributedString(from string: String) -> AttributedString {
+    private static func createAttributedString(from string: String) -> AttributedString {
         var attributedString = AttributedString(string)
         
-        // Define the range for [TIER]
         let components = string.split(separator: " ")
         
         let tier = String(components[1])
         
-        // Find the range of the tier in the string
         if let range = attributedString.range(of: tier) {
-            if let tierColor = LiveView.packColors[tier] {
+            if let tierColor = PackAlpha.packColors[tier] {
                 attributedString[range].foregroundColor = tierColor
             }
         }
@@ -62,7 +44,7 @@ struct LiveView: View {
         return attributedString
     }
     
-    func generateBiasedRandomNumber(max: Int = 10_000, alpha: Double = 2.0) -> Int {
+    private func generateBiasedRandomNumber(max: Int = 10_000, alpha: Double = 2.0) -> Int {
         precondition(alpha > 1, "Alpha must be greater than 1 to skew towards lower numbers.")
         if alpha != 1.01 {
             let u = Double.random(in: 0..<1)
@@ -74,7 +56,26 @@ struct LiveView: View {
         }
     }
     
-    func openPack() {
+    static private func determineCorrectStringAndPackTier(save: SaveSlot) -> (AttributedString, PackAlpha) {
+        var toReturn: (AttributedString, PackAlpha) = ("", PackAlpha.bronze)
+        if save.followers >= 15_000 {
+            toReturn.0 = LiveView.createAttributedString(from: "Open HOBBY Pack!")
+            toReturn.1 = PackAlpha.hobby
+        } else if save.followers >= 10_000 {
+            toReturn.0 = LiveView.createAttributedString(from: "Open GOLD Pack!")
+            toReturn.1 = PackAlpha.gold
+        } else if save.followers >= 5_000 {
+            toReturn.0 = LiveView.createAttributedString(from: "Open SILVER Pack!")
+            toReturn.1 = PackAlpha.silver
+        } else {
+            toReturn.0 = LiveView.createAttributedString(from: "Open BRONZE Pack!")
+            toReturn.1 = PackAlpha.bronze
+        }
+        print(#function + "Current Followers: \(save.followers) \nCurrent PackTier: \(toReturn.1) \nCurrent String: \(toReturn.0)")
+        return toReturn
+    }
+    
+    private func openPack() {
         guard currentGif == Gif.bear, !isProcessing else {
                 return
             }
@@ -84,7 +85,6 @@ struct LiveView: View {
             
         DispatchQueue.main.asyncAfter(deadline: .now() + 4.75) {
             followersToGain = generateBiasedRandomNumber(alpha: save.currentPackTier.rawValue)
-            print("Followers to Gain: \(followersToGain)")
             currentGif = (followersToGain >= 2000) ? Gif.goodCard : Gif.badCard
             save.followers = save.followers + followersToGain
             followerString = "You Gained \(followersToGain) Followers!"
@@ -92,19 +92,9 @@ struct LiveView: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 4.75) {
                 currentGif = Gif.bear
                 followerString = "You currently have \n\(save.followers) Followers!"
-                if save.followers >= 15_000 {
-                    packString = LiveView.createAttributedString(from: "Open HOBBY Pack!")
-                    save.currentPackTier = PackAlpha.hobby
-                } else if save.followers >= 10_000 {
-                    packString = LiveView.createAttributedString(from: "Open GOLD Pack!")
-                    save.currentPackTier = PackAlpha.gold
-                } else if save.followers >= 5_000 {
-                    packString = LiveView.createAttributedString(from: "Open SILVER Pack!")
-                    save.currentPackTier = PackAlpha.silver
-                } else {
-                    packString = LiveView.createAttributedString(from: "Open BRONZE Pack!")
-                    save.currentPackTier = PackAlpha.bronze
-                }
+                let newValues = LiveView.determineCorrectStringAndPackTier(save: self.save)
+                packString = newValues.0
+                save.currentPackTier = newValues.1
                 viewModel.updateSaveSlots(id: save.id, newSave: save)
                 isProcessing = false
             }
@@ -113,15 +103,8 @@ struct LiveView: View {
     
     init(save: SaveSlot) {
         self.save = save
-        if save.followers >= 15_000 {
-            self.packString = LiveView.createAttributedString(from: "Open HOBBY Pack!")
-        } else if save.followers >= 10_000 {
-            self.packString = LiveView.createAttributedString(from: "Open GOLD Pack!")
-        } else if save.followers >= 5_000 {
-            self.packString = LiveView.createAttributedString(from: "Open SILVER Pack!")
-        } else {
-            self.packString = LiveView.createAttributedString(from: "Open BRONZE Pack!")
-        }
+        self.packString = LiveView.determineCorrectStringAndPackTier(save: save).0
+        print(#function + "Current Followers: \(save.followers)")
     }
     
     var body: some View {

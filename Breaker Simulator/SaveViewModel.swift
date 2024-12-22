@@ -7,33 +7,25 @@
 
 import Foundation
 
-struct SaveSlot: Codable, Identifiable {
-    let id: Int
-    var wasPlayed: Bool
-    var lastPlayed: Date?
-    var money: Int
-    var followers: Int
-    var currentPackTier: PackAlpha
-}
-
 class SaveViewModel: ObservableObject {
     @Published var saveSlots: [SaveSlot] = []
     private let saveKey = "SaveSlots"
     
     init() {
         loadSaveSlots()
+        print("Number of SaveSlots: \(saveSlots.count)")
     }
     
-    func loadSaveSlots() {
+    private func loadSaveSlots() {
         if let data = UserDefaults.standard.data(forKey: saveKey), let decoded = try? JSONDecoder().decode([SaveSlot].self, from: data) {
             self.saveSlots = decoded
         } else {
-            self.saveSlots = (1...4).map { SaveSlot(id: $0, wasPlayed: false, lastPlayed: nil, money: 0, followers: 0, currentPackTier: .bronze) }
+            self.saveSlots = (0...3).map { SaveSlot(id: $0, wasPlayed: false, lastPlayed: nil, money: 0, followers: 0, currentPackTier: .bronze) }
             saveSaveSlots()
         }
     }
     
-    func saveSaveSlots() {
+    private func saveSaveSlots() {
         if let encoded = try? JSONEncoder().encode(saveSlots) {
             UserDefaults.standard.set(encoded, forKey: saveKey)
         }
