@@ -15,19 +15,17 @@ struct SettingsView: View {
                 .ignoresSafeArea()
             VStack {
                 HStack {
-                    ForEach(0..<2) { index in
-                        if index == 1 {
-                            BarButtonView(type: .allCases[index])
-                            .hidden()
-                        } else {
-                            BarButtonView(type: .allCases[index])
-                        }
-                    }
+                    BarButtonView(type: .back)
+                    Spacer()
+                    BarButtonView(type: .settings)
+                        .hidden()
                 }
+                .padding()
+                .frame(maxWidth: .infinity)
                 ZStack {
                     RoundedRectangle(cornerRadius: 50)
                         .foregroundStyle(Color.white)
-                        .frame(width: 400, height: 80)
+                        .frame(width: 370, height: 80)
                     Text("What could you possibly \nneed to change?")
                         .foregroundStyle(Color.black)
                         .font(Font.custom("Lilita One", size: 30))

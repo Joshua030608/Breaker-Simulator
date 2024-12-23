@@ -36,17 +36,13 @@ struct HubView: View {
     
     func determineColor(index: Int) -> Color {
         let indexesForType: [HubViewType: Int] = [.ranking: 0, .live: 1, .upgrades: 2]
-        if indexesForType[currentView] == index {
-            return Color(CGColor(red: 0/255, green: 0/255, blue: 255/255, alpha: 1))
-        } else {
-            return Color.gray
-        }
+        return index == indexesForType[currentView] ? .blue : .gray
     }
     
     init(saveSlot: Int) {
         self.saveSlot = saveSlot
     }
-
+    
     var body: some View {
         GeometryReader { geometry in
             ZStack {
@@ -54,65 +50,50 @@ struct HubView: View {
                     .ignoresSafeArea()
                 VStack {
                     HStack {
-                        ForEach(0..<2) { index in
-                            BarButtonView(type: .allCases[index])
-                        }
+                        BarButtonView(type: .back)
+                        Spacer()
+                        BarButtonView(type: .settings)
                     }
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.gray.opacity(0.2))
                     
                     switch currentView {
                         
                     case .ranking:
                         //RankingView()
-                        EmptyView()
+                        LiveView(save: viewModel.saveSlots[saveSlot])
                     case .live:
                         LiveView(save: viewModel.saveSlots[saveSlot])
                     case .upgrades:
                         //UpgradesView()
-                        EmptyView()
-                        
+                        LiveView(save: viewModel.saveSlots[saveSlot])
                     }
                     
-                    ZStack {
-                        Rectangle()
-                            .ignoresSafeArea()
-                            .frame(maxWidth: .infinity, minHeight: 80, maxHeight: 80)
-                            .foregroundStyle(Color(goldColor))
-                        Rectangle()
-                            .frame(maxWidth: .infinity, minHeight: 15, maxHeight: 15)
-                            .offset(y: -32.5)
-                            .foregroundStyle(Color(darkGoldColor))
-                        ForEach(0..<2) { index in
-                            let position = CGFloat((Int(geometry.size.width) * (index + 1)) / 3)
-                            Rectangle()
-                                .ignoresSafeArea()
-                                .frame(width: 7, height: 80)
-                                .position(x: position)
-                                .offset(y: 40)
-                                .foregroundStyle(Color(darkGoldColor))
-                        }
-                        
-                        HStack {
-                            ForEach(0..<3) { index in
-                                Button {
-                                    print("Index \(index) pressed!")
-                                } label: {
-                                    ZStack {
-                                        Rectangle()
-                                            .frame(width: (geometry.size.width) / 3, height: 80)
-                                            .position(x: CGFloat((Int(geometry.size.width) * (index)) / 3))
-                                            .offset(y: 40)
-                                            .foregroundStyle(Color(transparentColor))
-                                        Image(systemName: determineImageName(index: index))
-                                            .resizable()
-                                            .frame(width: 55, height: 55)
-                                            .offset(y: 20)
-                                            .foregroundStyle(Color(determineColor(index: index)))
-                                    }
+                    HStack(spacing: 0) {
+                        ForEach(0..<3) { index in
+                            Button {
+                                switch index {
+                                case 0: currentView = .ranking
+                                case 1: currentView = .live
+                                case 2: currentView = .upgrades
+                                default: break
                                 }
+                            } label: {
+                                VStack {
+                                    Image(systemName: determineImageName(index: index))
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 50, height: 50)
+                                        .offset(y: 5)
+                                        .foregroundColor(determineColor(index: index))
+                                }
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
                             }
                         }
-                        //TODO: First button: list of rankings (list?); second button: go live (camera); third button: upgrade (up arrow circle fill)
-                    }.frame(maxHeight: 80)
+                    }
+                    .frame(height: 80)
+                    .background(goldColor)
                 }
             }
         }.persistentSystemOverlays(.hidden)

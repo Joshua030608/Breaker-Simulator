@@ -21,7 +21,7 @@ struct BarButtonView: View {
     private let type: BarButtonViewType
     @State private var settingsButtonPressed = false
     
-    init (type: BarButtonViewType) {
+    init(type: BarButtonViewType) {
         self.type = type
     }
     
@@ -35,9 +35,6 @@ struct BarButtonView: View {
                     .resizable()
                     .frame(width: 30, height: 30)
             }
-                .padding(.trailing, 20)
-                .padding(.top, 50)
-                .offset(x: 165, y: -35)
                 .navigationDestination(isPresented: $settingsButtonPressed) {
                     SettingsView()
                         .navigationBarBackButtonHidden()
@@ -50,9 +47,6 @@ struct BarButtonView: View {
                     .resizable()
                     .frame(width: 30, height: 30)
             }
-                .padding(.leading, 20)
-                .padding(.top, 50)
-                .offset(x: -165, y: -35)
         }
     }
     

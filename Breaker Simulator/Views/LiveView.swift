@@ -77,12 +77,12 @@ struct LiveView: View {
     
     private func openPack() {
         guard currentGif == Gif.bear, !isProcessing else {
-                return
-            }
-            
-            isProcessing = true
-            currentGif = Gif.pack
-            
+            return
+        }
+        
+        isProcessing = true
+        currentGif = Gif.pack
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 4.75) {
             followersToGain = generateBiasedRandomNumber(alpha: save.currentPackTier.rawValue)
             currentGif = (followersToGain >= 2000) ? Gif.goodCard : Gif.badCard
@@ -119,7 +119,7 @@ struct LiveView: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 50)
                     .foregroundStyle(Color.white)
-                    .frame(width: 380, height: 80)
+                    .frame(width: 370, height: 80)
                 HStack {
                     Image("pack")
                         .resizable()
@@ -135,7 +135,7 @@ struct LiveView: View {
             if followerString != "" {
                 RoundedRectangle(cornerRadius: 50)
                     .foregroundStyle(Color.white)
-                    .frame(width: 400, height: 80)
+                    .frame(width: 370, height: 80)
                 Text(followerString)
                     .foregroundStyle(Color.black)
                     .font(Font.custom("Lilita One", size: 30))
