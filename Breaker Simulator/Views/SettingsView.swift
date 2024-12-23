@@ -17,10 +17,10 @@ struct SettingsView: View {
                 HStack {
                     ForEach(0..<2) { index in
                         if index == 1 {
-                            BarButton(type: .allCases[index])
+                            BarButtonView(type: .allCases[index])
                             .hidden()
                         } else {
-                            BarButton(type: .allCases[index])
+                            BarButtonView(type: .allCases[index])
                         }
                     }
                 }

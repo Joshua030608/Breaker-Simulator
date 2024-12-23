@@ -13,6 +13,7 @@ struct SaveView: View {
     private let goldColor: Color = Color(CGColor(red: 239/255, green: 191/255, blue: 4/255, alpha: 1))
     private let lastPlayedText: String
     @State private var saveButtonPressed = false
+    @State private var showAlert = false
     
     static private func formatLastPlayedText(save: SaveSlot) -> String {
         if save.lastPlayed != nil {
@@ -49,7 +50,8 @@ struct SaveView: View {
                             .font(Font.custom("Lilita One", size: 30))
                         if save.wasPlayed {
                             Button {
-                                viewModel.clearSaveSlots(id: save.id)
+                                showAlert = true
+                                print("Alert Showing: \(showAlert)")
                             } label: {
                                 Image(systemName: "x.circle.fill")
                                     .resizable()
@@ -62,6 +64,12 @@ struct SaveView: View {
                         .foregroundStyle(Color.black)
                         .font(Font.custom("Lilita One", size: 20))
                 }
+            }.alert("Are You Sure?", isPresented: $showAlert) {
+                Button("Delete Save", role: .destructive) {
+                    viewModel.clearSaveSlots(id: save.id)
+                    showAlert = false
+                }
+                Button("Cancel", role: .cancel) { showAlert = false }
             }
         }.navigationDestination(isPresented: $saveButtonPressed) {
             HubView(saveSlot: save.id)

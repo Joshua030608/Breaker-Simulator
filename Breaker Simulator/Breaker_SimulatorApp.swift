@@ -12,7 +12,7 @@ struct Breaker_SimulatorApp: App {
     @StateObject private var viewModel = SaveViewModel()
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            StartingView()
                 .environmentObject(viewModel)
         }
     }

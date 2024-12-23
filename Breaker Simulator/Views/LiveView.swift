@@ -119,7 +119,7 @@ struct LiveView: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 50)
                     .foregroundStyle(Color.white)
-                    .frame(width: 400, height: 80)
+                    .frame(width: 380, height: 80)
                 HStack {
                     Image("pack")
                         .resizable()

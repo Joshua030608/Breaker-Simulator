@@ -1,5 +1,5 @@
 //
-//  BarButton.swift
+//  BarButtonView.swift
 //  Breaker Simulator
 //
 //  Created by Joshua Ford on 10/22/24.
@@ -7,21 +7,21 @@
 
 import SwiftUI
 
-enum BarButtonType: CaseIterable {
+enum BarButtonViewType: CaseIterable {
     
-    static let allCases: [BarButtonType] = [.back, .settings]
+    static let allCases: [BarButtonViewType] = [.back, .settings]
     
     case back
     case settings
 }
 
-struct BarButton: View {
+struct BarButtonView: View {
     @Environment(\.dismiss) private var dismiss
     
-    private let type: BarButtonType
+    private let type: BarButtonViewType
     @State private var settingsButtonPressed = false
     
-    init (type: BarButtonType) {
+    init (type: BarButtonViewType) {
         self.type = type
     }
     

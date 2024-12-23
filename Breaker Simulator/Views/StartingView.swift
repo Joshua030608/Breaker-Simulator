@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  StartingView.swift
 //  Breaker Simulator
 //
 //  Created by Joshua Ford on 10/20/24.
@@ -8,7 +8,7 @@
 import SwiftUI
 import NavigationTransitions
 
-struct ContentView: View {
+struct StartingView: View {
     @EnvironmentObject private var viewModel: SaveViewModel
     
     private let goldColor: Color = Color(CGColor(red: 239/255, green: 191/255, blue: 4/255, alpha: 1))
