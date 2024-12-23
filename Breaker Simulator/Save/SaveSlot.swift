@@ -14,6 +14,10 @@ struct SaveSlot: Codable, Identifiable {
     var money: Int
     var followers: Int
     var currentPackTier: PackAlpha
+    
+    static func generateBlankSave(id: Int) -> SaveSlot {
+        return SaveSlot(id: id, wasPlayed: false, lastPlayed: nil, money: 0, followers: 0, currentPackTier: .bronze)
+    }
 }
 
 enum PackAlpha: Double, Codable {

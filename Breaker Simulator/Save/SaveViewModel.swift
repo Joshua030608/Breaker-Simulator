@@ -29,7 +29,7 @@ class SaveViewModel: ObservableObject {
                 let decoded = try JSONDecoder().decode([SaveSlot].self, from: data)
                 self.saveSlots = decoded
             } else {
-                self.saveSlots = (0...3).map { SaveSlot(id: $0, wasPlayed: false, money: 0, followers: 0, currentPackTier: .bronze) }
+                self.saveSlots = (0...3).map { SaveSlot.generateBlankSave(id: $0) }
                 saveSaveSlots()
             }
         } catch {
@@ -58,8 +58,7 @@ class SaveViewModel: ObservableObject {
     
     func clearSaveSlots(id: Int) {
         if let index = saveSlots.firstIndex(where: { $0.id == id }) {
-            saveSlots[index].wasPlayed = false
-            saveSlots[index].lastPlayed = nil
+            saveSlots[index] = SaveSlot.generateBlankSave(id: id)
             saveSaveSlots()
         }
     }
