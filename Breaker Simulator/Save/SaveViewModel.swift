@@ -7,7 +7,7 @@
 
 import Foundation
 
-class SaveViewModel: ObservableObject {
+final class SaveViewModel: ObservableObject {
     @Published var saveSlots: [SaveSlot] = []
     private let fileName = "document.json"
     
@@ -17,7 +17,6 @@ class SaveViewModel: ObservableObject {
     
     init() {
         loadSaveSlots()
-        print("Number of SaveSlots: \(saveSlots.count)")
     }
     
     private func loadSaveSlots() {
